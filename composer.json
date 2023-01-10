@@ -9,6 +9,8 @@
         "php": ">=8.2.1",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "doctrine/doctrine-migrations-bundle": "3.2.2",
+        "doctrine/migrations": "^3.2",
         "easycorp/easyadmin-bundle": "^4",
         "symfony/console": "6.2.*",
         "symfony/dotenv": "6.2.*",

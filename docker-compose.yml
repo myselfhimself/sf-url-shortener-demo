@@ -18,7 +18,7 @@ services:
       start_period: 30s
     environment:
       # Run "composer require symfony/orm-pack" to install and configure Doctrine ORM
-      DATABASE_URL: postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-!ChangeMe!}@database:5432/${POSTGRES_DB:-app}?serverVersion=${POSTGRES_VERSION:-14}
+      DATABASE_URL: ${DATABASE_URL:-none}
       # Run "composer require symfony/mercure-bundle" to install and configure the Mercure integration
       MERCURE_URL: ${CADDY_MERCURE_URL:-http://caddy/.well-known/mercure}
       MERCURE_PUBLIC_URL: https://${SERVER_NAME:-localhost}/.well-known/mercure
@@ -56,7 +56,7 @@ services:
     image: 'mysql:latest'
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: main
+      MYSQL_DATABASE: app
     ports:
       # To allow the host machine to access the ports below, modify the lines below.
       # For example, to allow the host to connect to port 3306 on the container, you would change
@@ -70,16 +70,17 @@ services:
 
 ###> doctrine/doctrine-bundle ###
   database:
-    image: postgres:${POSTGRES_VERSION:-14}-alpine
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      # You should definitely change the password in production
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
-      POSTGRES_USER: ${POSTGRES_USER:-app}
+    image: mysql:5.7-debian
     volumes:
-      - db-data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
+    - ./data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-password}
+      MYSQL_DATABASE: ${DB_DATABASE:-app}
+      MYSQL_USER: ${DB_USER:-newuser}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-password}
+    ports:
+        - 3306:3306
+
 ###< doctrine/doctrine-bundle ###
 
 volumes:
