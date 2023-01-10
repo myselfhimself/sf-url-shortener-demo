@@ -4,6 +4,8 @@ namespace App\Controller\Admin;
 
 use App\Entity\ShortUrl;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class ShortUrlCrudController extends AbstractCrudController
 {
@@ -12,14 +14,10 @@ class ShortUrlCrudController extends AbstractCrudController
         return ShortUrl::class;
     }
 
-    /*
     public function configureFields(string $pageName): iterable
     {
-        return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
-        ];
+        yield DateTimeField::new ('created_at')->setDisabled(true);
+        yield TextField::new ('original_url');
+        yield TextField::new ('short_uri');
     }
-    */
 }

@@ -6,6 +6,7 @@ use App\Repository\UrlHitRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UrlHitRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class UrlHit
 {
     #[ORM\Id]
@@ -19,6 +20,12 @@ class UrlHit
     #[ORM\ManyToOne(inversedBy: 'urlHits')]
     #[ORM\JoinColumn(nullable: false)]
     private ?ShortUrl $shortUrl = null;
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {

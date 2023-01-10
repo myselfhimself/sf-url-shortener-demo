@@ -17,7 +17,7 @@ class UrlHitCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        yield DateTimeField::new ('created_at');
+        yield DateTimeField::new ('created_at')->setDisabled(true);
         yield AssociationField::new ('shortUrl')
             ->setFormTypeOptions([
                 'by_reference' => false,

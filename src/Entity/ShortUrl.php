@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ShortUrlRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class ShortUrl
 {
     #[ORM\Id]
@@ -22,7 +23,7 @@ class ShortUrl
     private ?string $shortUri = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
+    private ?\DateTime $createdAt = null;
 
     #[ORM\OneToMany(mappedBy: 'shortUrl', targetEntity: UrlHit::class)]
     private Collection $urlHits;
@@ -30,6 +31,12 @@ class ShortUrl
     public function __construct()
     {
         $this->urlHits = new ArrayCollection();
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue()
+    {
+        $this->createdAt = new \DateTime();
     }
 
     public function getId(): ?int
@@ -61,12 +68,12 @@ class ShortUrl
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    public function setCreatedAt(\DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
 
