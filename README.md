@@ -1,2 +1,2 @@
-# sf-url-shortener-demo
-A sample URL shortener form &amp; service for self-training
+# Symfony URL shortener demo
+A sample URL shortener form & service for self-training
