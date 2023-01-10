@@ -25,9 +25,6 @@ jobs:
                     esac
                   done
                   exit 1
-            - name: Set-up database and schema
-              run: |
-                  docker-compose exec -T php bin/console doctrine:schema:create -n
             - name: Check HTTP reachability
               run: curl http://localhost
             - name: Check HTTPS reachability
