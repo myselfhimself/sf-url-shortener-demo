@@ -1,0 +1,15 @@
+#!/bin/bash
+set -x
+#[ -z "$1" ] && echo "Please specify a CLI command (ex. ls)" && exit
+if ! [[ -f .env ]]; then
+  echo "A .env file must be in your current working directory. Are you in ../bin/?"
+  exit 1
+fi
+source .env
+if [[ "$DATABASE_URL" =~ "psql".* ]]; then
+  echo not implemented
+else
+  docker-compose exec -T database mysql -u root -p$DB_ROOT_PASSWORD -e "SELECT Host, User FROM mysql.user"
+  docker-compose exec -T database mysql -u root -p$DB_ROOT_PASSWORD -e "GRANT ALL PRIVILEGES ON *.* TO '$DB_USER'@'%'; FLUSH PRIVILEGES"
+  docker-compose exec -T database mysql -u root -p$DB_ROOT_PASSWORD -e "SHOW GRANTS FOR '$DB_USER'"
+fi

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ShortUrlRepository;
+use App\Util\UriHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -34,9 +35,13 @@ class ShortUrl
     }
 
     #[ORM\PrePersist]
-    public function setCreatedAtValue()
+    public function setCreatedAtValueAndShortUriIfNeeded()
     {
         $this->createdAt = new \DateTime();
+
+        if(empty($this->shortUri)) {
+            $this->shortUri = UriHelper::generateUniqueUri();
+        }
     }
 
     public function getId(): ?int

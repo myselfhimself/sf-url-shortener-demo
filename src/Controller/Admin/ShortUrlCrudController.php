@@ -17,7 +17,7 @@ class ShortUrlCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield DateTimeField::new ('created_at')->setDisabled(true);
-        yield TextField::new ('original_url');
+        yield TextField::new ('original_url')->addCssClass('optional')->setHelp('Leave empty to obtain random URI.');
         yield TextField::new ('short_uri');
     }
 }
